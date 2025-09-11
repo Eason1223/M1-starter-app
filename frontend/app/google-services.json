@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "729573360309",
+    "project_id": "cpen321m1-c2759",
+    "storage_bucket": "cpen321m1-c2759.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729573360309:android:282106139338cdb1e5b4fc",
+        "android_client_info": {
+          "package_name": "com.cpen321.usermanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBffxXrUCnYbOYfNg693hqfIBIGqJ1EZJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

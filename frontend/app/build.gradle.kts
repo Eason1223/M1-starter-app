@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     // secrets gradle plugin
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services") // ADD THIS LINE
 }
 
 android {

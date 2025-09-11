@@ -41,6 +41,10 @@ import com.cpen321.usermanagement.ui.viewmodels.ProfileViewModel
 import com.cpen321.usermanagement.ui.theme.LocalSpacing
 import kotlinx.coroutines.launch
 
+import android.util.Log
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
 private data class AuthSnackbarData(
     val successMessage: String?,
     val errorMessage: String?,
@@ -74,11 +78,26 @@ fun AuthScreen(
     AuthContent(
         uiState = uiState,
         snackBarHostState = snackBarHostState,
+        // Simple debug for AuthScreen.kt - replace your onSignInClick
+
         onSignInClick = {
+            println("DEBUG: Sign In button clicked")
             (context as? ComponentActivity)?.lifecycleScope?.launch {
+                println("DEBUG: Starting Google Sign In...")
+                
                 val result = authViewModel.signInWithGoogle(context)
+                
+                println("DEBUG: Google Sign In result: ${if (result.isSuccess) "SUCCESS" else "FAILURE"}")
+                
                 result.onSuccess { credential ->
+                    println("DEBUG: Got Google credential")
+                    println("DEBUG: Token length: ${credential.idToken.length}")
+                    
                     authViewModel.handleGoogleSignInResult(credential)
+                    
+                    println("DEBUG: handleGoogleSignInResult called")
+                }.onFailure { error ->
+                    println("DEBUG ERROR: Google Sign In failed: ${error.message}")
                 }
             }
         },
