@@ -2,8 +2,8 @@
 
 ## New Feature
 
-**Name:** [WRITE_FEATURE_NAME]
+**Name:** [City Map (Google Maps)]
 
-**Short description:** [WRITE_A_SHORT_DESCRIPTION_OF_THE_CODE]
+**Short description:** [Adds an interactive Google Map card to the main screen. Users pick a city (Vancouver / San Francisco / Tokyo / Paris) from a dropdown; the map recenters and shows a marker. This uses the Google Maps SDK for Android via Maps Compose (external API) and reads your API key from @string/google_maps_key.]
 
-**Location and code:** [WRITE_FEATURE_CODE_LOCATION]
+**Location and code:** [app/src/main/java/com/cpen321/usermanagement/ui/screens/components/CityMapCard.kt]
