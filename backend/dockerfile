@@ -1,0 +1,31 @@
+# ---- Build stage: install dev deps and compile TS -> dist/ ----
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Install all deps (including dev) so tsc is available
+COPY package*.json ./
+RUN npm ci
+
+# Copy source and build
+COPY . .
+RUN npm run build   # produces dist/index.js
+
+# ---- Runtime stage: slim image with only prod deps + dist ----
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=8080
+
+# Install only production deps
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copy compiled JS only
+COPY --from=builder /app/dist ./dist
+
+# If you serve static files from repo (not uploads volume), copy them here as needed.
+# EXPOSE is optional for Compose, but nice for docs:
+EXPOSE 8080
+
+# Matches your package.json start script ("node dist/index.js")
+CMD ["npm", "start"]

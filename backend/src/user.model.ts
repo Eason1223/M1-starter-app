@@ -104,9 +104,23 @@ export class UserModel {
     }
   }
 
-  async delete(userId: mongoose.Types.ObjectId): Promise<void> {
+  // async delete(userId: mongoose.Types.ObjectId): Promise<void> {
+  //   try {
+  //     await this.user.findByIdAndDelete(userId);
+  //   } catch (error) {
+  //     logger.error('Error deleting user:', error);
+  //     throw new Error('Failed to delete user');
+  //   }
+  // }
+  async delete(userId: mongoose.Types.ObjectId): Promise<boolean> {
     try {
-      await this.user.findByIdAndDelete(userId);
+      const result = await this.user.findByIdAndDelete(userId);
+      if (!result) {
+        logger.warn(`User with id ${userId} not found for deletion`);
+        return false;
+      }
+      logger.info(`Successfully deleted user with id ${userId}`);
+      return true;
     } catch (error) {
       logger.error('Error deleting user:', error);
       throw new Error('Failed to delete user');

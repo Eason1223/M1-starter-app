@@ -48,14 +48,50 @@ export class UserController {
     }
   }
 
+  // async deleteProfile(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     const user = req.user!;
+
+  //     await MediaService.deleteAllUserImages(user._id.toString());
+
+  //     await userModel.delete(user._id);
+
+  //     res.status(200).json({
+  //       message: 'User deleted successfully',
+  //     });
+  //   } catch (error) {
+  //     logger.error('Failed to delete user:', error);
+
+  //     if (error instanceof Error) {
+  //       return res.status(500).json({
+  //         message: error.message || 'Failed to delete user',
+  //       });
+  //     }
+
+  //     next(error);
+  //   }
+  // }
   async deleteProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const user = req.user!;
-
+      
+      // First, delete all user images
+      logger.info(`Deleting images for user ${user._id}`);
       await MediaService.deleteAllUserImages(user._id.toString());
 
-      await userModel.delete(user._id);
+      // Then, delete the user from database
+      logger.info(`Deleting user ${user._id} from database`);
+      const deleted = await userModel.delete(user._id);
 
+      if (!deleted) {
+        logger.error(`Failed to delete user ${user._id} - user not found`);
+        return res.status(404).json({
+          message: 'User not found',
+        });
+      }
+
+      logger.info(`Successfully deleted user ${user._id} and all associated data`);
+      
       res.status(200).json({
         message: 'User deleted successfully',
       });

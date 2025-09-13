@@ -4,6 +4,8 @@ import logger from './logger.util';
 import { MediaService } from './media.service';
 import { UploadImageRequest, UploadImageResponse } from './media.types';
 import { sanitizeInput } from './sanitizeInput.util';
+import { userModel } from './user.model';
+import { Types } from "mongoose";
 
 export class MediaController {
   async uploadImage(
@@ -24,6 +26,12 @@ export class MediaController {
         sanitizedFilePath,
         user._id.toString()
       );
+
+      const relative = image;                            // e.g. "uploads/images/..."
+      const base = `${req.protocol}://${req.get("host")}`;
+      const url  = `${base}/${relative}`;                // e.g. http://10.0.2.2:3000/uploads/...
+
+      await userModel.update(new Types.ObjectId(user._id), { profilePicture: url }); // persist
 
       res.status(200).json({
         message: 'Image uploaded successfully',
